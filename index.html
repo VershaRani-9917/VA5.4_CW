@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>API Post Call</title>
+  </head>
+  <body>
+    <form id="postForm">
+      <h1>API Post Call</h1>
+      <label for="name">Name:</label>
+      <input id="name" type="text" />
+
+      <label for="message">Message:</label>
+      <input id="message" type="text" />
+      
+      <button type="submit">Submit</button>
+    </form>
+
+    <div id="responseContainer"></div>
+    <script>
+      const postForm = document.querySelector("#postForm");
+      const responseContainer = document.querySelector("#responseContainer");
+      const nameInput = document.querySelector("#name");
+      const messageInput = document.querySelector("#message");
+
+      postForm.addEventListener("submit", function (event) {
+        event.preventDefault(); 
+
+        const apiUrl = "https://jsonplaceholder.typicode.com/posts";
+
+        const requestData = {
+          name: nameInput.value,
+          message: messageInput.value,
+        };
+
+        fetch(apiUrl, {
+          method: "POST",
+          body: JSON.stringify(requestData),
+          headers: {
+            "Content-Type": "application/json", 
+          },
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            if (data) {
+              responseContainer.textContent = JSON.stringify(data);
+            } else {
+              responseContainer.textContent = "Failed to make the POST call.";
+            }
+          })
+          .catch(function (error) {
+            responseContainer.textContent =
+              "An error occurred while making the POST call.";
+          });
+      });
+    </script>
+  </body>
+</html>
